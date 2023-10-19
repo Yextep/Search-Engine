@@ -1,7 +1,3 @@
-beautifulsoup4 
-requests googlesearch-python 
-sqlite3 
-googlesearch-python 
-sumy 
-nltk 
-requests beautifulsoup4
+beautifulsoup4
+sumy
+nltk
