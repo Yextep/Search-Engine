@@ -8,35 +8,45 @@ from sumy.summarizers.lsa import LsaSummarizer
 # Descargar el recurso 'punkt' de NLTK sin mostrar mensajes de descarga
 nltk.download('punkt', quiet=True)
 
-# Función para buscar y resumir información
+# FunciÃ³n para buscar y resumir informaciÃ³n
 def buscar_y_resumir_informacion():
-    busqueda = input("¿Qué desea buscar en la web? ").strip()
-    resultados = buscar_en_la_web(busqueda, num_resultados=2)
+    busqueda = input("Â¿QuÃ© desea buscar en la web? ").strip()
+    resultados = buscar_en_la_web(busqueda, num_resultados=5)
     
     if resultados:
         for i, resultado in enumerate(resultados, start=1):
             titulo, url, contenido = resultado
             print(f"Resultado {i}:")
-            print(f"Título: {titulo}")
+            print(f"TÃ­tulo: {titulo}")
             print(f"URL: {url}")
             
-            # Resumir el contenido de manera más breve
+            # Resumir el contenido de manera mÃ¡s breve
             parser = PlaintextParser.from_string(contenido, Tokenizer("english"))
             summarizer = LsaSummarizer()
-            summary = summarizer(parser.document, 1)  # Resumir a 1 oración
+            summary = summarizer(parser.document, 1)  # Resumir a 1 oraciÃ³n
 
             for sentence in summary:
                 print(f"Resumen: {sentence}\n")
-        
+
+        opcion_ver = input("Â¿Desea ver uno de los resultados completos en pantalla? (SÃ­/No): ").strip().lower()
+        if opcion_ver == "si" or opcion_ver == "sÃ­":
+            num_resultado = int(input("Elija el nÃºmero del resultado que desea ver (1-5): ").strip())
+            if 1 <= num_resultado <= 5:
+                titulo, url, contenido = resultados[num_resultado - 1]
+                print(f"Resultado {num_resultado} - TÃ­tulo: {titulo}")
+                print(f"URL: {url}")
+                print("Contenido completo:")
+                print(contenido)
+
         guardar_resultados(resultados)
     else:
-        print("No se encontraron resultados para la búsqueda.")
+        print("No se encontraron resultados para la bÃºsqueda.")
 
-# Función para buscar en la web
-def buscar_en_la_web(query, num_resultados=2):
+# FunciÃ³n para buscar en la web
+def buscar_en_la_web(query, num_resultados=5):
     resultados = []
     try:
-        # Realizar una búsqueda en Google
+        # Realizar una bÃºsqueda en Google
         url = f"https://www.google.com/search?q={query}"
         headers = {"User-Agent": "Mozilla/5.0"}
         response = requests.get(url, headers=headers)
@@ -54,16 +64,16 @@ def buscar_en_la_web(query, num_resultados=2):
                         break
         return resultados
     except Exception as e:
-        print(f"Error en la búsqueda: {str(e)}")
+        print(f"Error en la bÃºsqueda: {str(e)}")
         return resultados
 
-# Función para extraer contenido de una URL
+# FunciÃ³n para extraer contenido de una URL
 def extraer_contenido(url):
     try:
         response = requests.get(url)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            # Aquí puedes ajustar qué parte del contenido deseas extraer de la página web.
+            # AquÃ­ puedes ajustar quÃ© parte del contenido deseas extraer de la pÃ¡gina web.
             # En este caso, estamos extrayendo el texto dentro de las etiquetas 'p'.
             contenido = "\n".join([p.text for p in soup.find_all('p')])
             return contenido
@@ -71,13 +81,13 @@ def extraer_contenido(url):
     except Exception as e:
         return ""
 
-# Función para guardar resultados en un archivo de texto
+# FunciÃ³n para guardar resultados en un archivo de texto
 def guardar_resultados(resultados):
-    opcion = input("¿Desea guardar la información completa en un archivo de texto? (Sí/No): ").strip().lower()
-    if opcion == "si" or opcion == "sí":
-        eleccion = input("¿Desea guardar todos los resultados o elegir uno? (Todos/Uno): ").strip().lower()
+    opcion = input("Â¿Desea guardar los resultados en un archivo de texto? (SÃ­/No): ").strip().lower()
+    if opcion == "si" or opcion == "sÃ­":
+        eleccion = input("Â¿Desea guardar todos los resultados o elegir uno? (Todos/Uno): ").strip().lower()
         if eleccion == "todos":
-            nombre_archivo = input("Especifique un nombre para el archivo de texto (sin la extensión .txt): ").strip()
+            nombre_archivo = input("Especifique un nombre para el archivo de texto (sin la extensiÃ³n .txt): ").strip()
             if not nombre_archivo:
                 nombre_archivo = "resultados_completos"
             nombre_archivo += ".txt"
@@ -89,9 +99,9 @@ def guardar_resultados(resultados):
                     archivo.write("\n\n")
             print(f"Resultados completos guardados en '{nombre_archivo}'.")
         elif eleccion == "uno":
-            numero_resultado = int(input(f"Elija el número del resultado que desea guardar (1-{len(resultados)}): ").strip())
-            if 1 <= numero_resultado <= len(resultados):
-                nombre_archivo = input("Especifique un nombre para el archivo de texto (sin la extensión .txt): ").strip()
+            numero_resultado = int(input(f"Elija el nÃºmero del resultado que desea guardar (1-5): ").strip())
+            if 1 <= numero_resultado <= 5:
+                nombre_archivo = input("Especifique un nombre para el archivo de texto (sin la extensiÃ³n .txt): ").strip()
                 if not nombre_archivo:
                     nombre_archivo = f"resultado_{numero_resultado}"
                 nombre_archivo += ".txt"
@@ -100,11 +110,11 @@ def guardar_resultados(resultados):
                     archivo.write(contenido)
                 print(f"Resultado {numero_resultado} guardado en '{nombre_archivo}'.")
             else:
-                print("Número de resultado no válido.")
+                print("NÃºmero de resultado no vÃ¡lido.")
         else:
-            print("Opción no válida.")
+            print("OpciÃ³n no vÃ¡lida.")
     else:
         print("Resultados no guardados.")
 
-# Ejecutar la búsqueda y resumen de información
+# Ejecutar la bÃºsqueda y resumen de informaciÃ³n
 buscar_y_resumir_informacion()
