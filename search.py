@@ -10,7 +10,7 @@ nltk.download('punkt', quiet=True)
 
 # Función para buscar y resumir información
 def buscar_y_resumir_informacion():
-    busqueda = input("¿Qué deseas buscar? ").strip()
+    busqueda = input("¿Qué desea buscar en la web? ").strip()
     resultados = buscar_en_la_web(busqueda, num_resultados=5)
     
     if resultados:
@@ -28,12 +28,12 @@ def buscar_y_resumir_informacion():
             for sentence in summary:
                 print(f"Resumen: {sentence}\n")
 
-        opcion_ver = input("¿Desea ver uno de los resultados completos en pantalla? (Si­/No): ").strip().lower()
-        if opcion_ver == "si" or opcion_ver == "sí­":
+        opcion_ver = input("¿Desea ver uno de los resultados completos en pantalla? (Sí/No): ").strip().lower()
+        if opcion_ver == "si" or opcion_ver == "sí":
             num_resultado = int(input("Elija el número del resultado que desea ver (1-5): ").strip())
             if 1 <= num_resultado <= 5:
                 titulo, url, contenido = resultados[num_resultado - 1]
-                print(f"Resultado {num_resultado} - Tí­tulo: {titulo}")
+                print(f"Resultado {num_resultado} - Título: {titulo}")
                 print(f"URL: {url}")
                 print("Contenido completo:")
                 print(contenido)
@@ -83,7 +83,7 @@ def extraer_contenido(url):
 
 # Función para guardar resultados en un archivo de texto
 def guardar_resultados(resultados):
-    opcion = input("¿Desea guardar los resultados en un archivo de texto? (Sí­/No): ").strip().lower()
+    opcion = input("¿Desea guardar los resultados en un archivo de texto? (Sí/No): ").strip().lower()
     if opcion == "si" or opcion == "sí":
         eleccion = input("¿Desea guardar todos los resultados o elegir uno? (Todos/Uno): ").strip().lower()
         if eleccion == "todos":
