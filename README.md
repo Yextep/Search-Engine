@@ -19,7 +19,7 @@ Instalamos requerimientos
 ```bash
 pip install -r requeriments.txt
 ```
-Ejecutamos el bot
+Ejecutamos el Script
 ```bash
 python3 search.py
 ```
